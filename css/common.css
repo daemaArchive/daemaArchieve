@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f4f7fa;
+  color: #172033;
+  font-family: Arial, "Malgun Gothic", sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  text-align: left;
+  font-size: 16px;
+}
+
