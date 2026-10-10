@@ -27,3 +27,40 @@ table {
   font-size: 16px;
 }
 
+th {
+  padding: 13px 14px;
+  background-color: #f2f5f9;
+}
+
+td {
+  padding: 13px 14px;
+  border-bottom: 1px solid #e7edf4;
+}
+
+.card-tag, .detail-tag, .tech-tag {
+  display: inline-block;
+  padding: 5px 11px;
+  border: 0;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 15px;
+}
+
+.status, .status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #fff0cc;
+  color: #b67600;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.status-approved {
+  background-color: #e6f7ec;
+  color: #25824e;
+}
+
+.status-rejected {
+  background-color: #fff0ef;
+  color: #c63c35;
+}
