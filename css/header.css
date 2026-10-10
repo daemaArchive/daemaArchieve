@@ -1,0 +1,35 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 0 48px;
+  min-height: 84px;
+  background-color: white;
+  border-bottom: 1px solid #dbe2ea;
+}
+
+.header a {
+  text-decoration: none;
+  color: #182335;
+}
+
+.header .logo {
+  font-size: 28px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.header-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 44px;
+}
+
+.header-nav a,
+.header-nav button {
+  font-size: 18px;
+  font-weight: bold;
+}
+
