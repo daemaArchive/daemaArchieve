@@ -33,3 +33,33 @@
   font-weight: bold;
 }
 
+.header-nav button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #182335;
+}
+
+.header-nav a:hover,
+.header-nav button:hover {
+  color: #000;
+}
+
+@media (max-width: 720px) {
+  .header {
+    padding: 12px 20px;
+  }
+
+  .header .logo {
+    font-size: 22px;
+  }
+
+  .header-nav {
+    gap: 16px;
+  }
+
+  .header-nav a,
+  .header-nav button {
+    font-size: 15px;
+  }
+}
