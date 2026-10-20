@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대마 아카이브</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/home.css">
+  <script type="module" src="../js/header.js"></script>
+  <script type="module" src="../js/home.js"></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main class="home">
+    <section id="home-intro" class="home-intro" hidden>
+      <h1>우리의 아이디어가<br>기록이 되는 곳</h1>
+      <p class="home-description">대덕소프트웨어마이스터고 학생들의 프로젝트를 소개하는 공간입니다.</p>
+    </section>
+
+    <div class="list-header">
+      <div>
+        <h2>프로젝트</h2>
+        <p class="home-description">우리 학교의 다양한 프로젝트를 만나보세요.</p>
+      </div>
+      <a id="add-project-btn" class="home-link" href="project-form.html" hidden>+ 프로젝트 등록</a>
+    </div>
+
+    <div id="project-cards" class="project-cards"></div>
+    <p id="home-empty" class="home-note" hidden>아직 승인된 프로젝트가 없습니다.</p>
+  </main>
+</body>
+</html>
