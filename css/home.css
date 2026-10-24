@@ -48,3 +48,58 @@
   gap: 24px;
 }
 
+.project-card {
+  display: block;
+  padding: 22px;
+  border: 1px solid #dce4ed;
+  border-radius: 8px;
+  background-color: white;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-thumb {
+  width: 100%;
+  height: 210px;
+  margin-bottom: 16px;
+  object-fit: cover;
+  display: block;
+}
+
+.project-card h3 {
+  margin: 0 0 8px;
+  font-size: 23px;
+}
+
+.card-summary {
+  margin: 0 0 16px;
+  color: #555;
+  font-size: 16px;
+}
+
+.card-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #eef2f7;
+  color: #777;
+  font-size: 15px;
+}
+
+.home-note {
+  color: #666;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .project-cards {
+    grid-template-columns: 1fr;
+  }
+}
