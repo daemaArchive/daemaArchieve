@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로젝트 상세 | 대마 아카이브</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/project-detail.css">
+  <script type="module" src="../js/header.js"></script>
+  <script type="module" src="../js/project-detail.js"></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main class="detail-main">
+    <a class="back-link" href="index.html">← 프로젝트 목록</a>
+    <p id="detail-message" hidden></p>
+
+    <article id="detail-article" hidden>
+      <div class="detail-header">
+        <div>
+          <h1 id="detail-title"></h1>
+          <p id="detail-summary" class="detail-summary"></p>
+          <p id="detail-date" class="detail-date"></p>
+        </div>
+        <a id="detail-github" class="github-button" href="#" target="_blank" hidden>GitHub 바로가기</a>
+      </div>
+
+      <img id="detail-thumbnail" class="detail-thumb" src="" alt="대표 이미지" hidden>
+
+      <section class="detail-section">
+        <h2>프로젝트 소개</h2>
+        <p id="detail-content" class="detail-content"></p>
+      </section>
+
+      <section id="detail-overview-section" class="detail-section" hidden>
+        <h2>프로젝트 개요서</h2>
+        <div class="overview-card">
+          <span id="detail-overview-name"></span>
+          <a id="detail-overview-download" class="download-button" href="#" target="_blank">다운로드</a>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2>기술 스택</h2>
+        <div id="detail-techs" class="detail-techs"></div>
+      </section>
+
+      <section class="detail-section">
+        <h2>팀원 및 역할</h2>
+        <table class="member-table">
+          <thead><tr><th>팀원</th><th>아이디</th><th>역할</th></tr></thead>
+          <tbody id="detail-members"></tbody>
+        </table>
+      </section>
+
+      <section id="detail-images-section" class="detail-section" hidden>
+        <h2>프로젝트 이미지</h2>
+        <div id="detail-images" class="detail-images"></div>
+      </section>
+
+      <section id="detail-video-section" class="detail-section" hidden>
+        <h2>시연 영상</h2>
+        <video id="detail-video" class="detail-video" controls></video>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
