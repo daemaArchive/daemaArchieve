@@ -53,3 +53,57 @@
   display: block;
 }
 
+.detail-section {
+  margin-bottom: 40px;
+}
+
+.detail-section h2 {
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e1e8f0;
+  font-size: 26px;
+}
+
+.detail-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.overview-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border: 1px solid #dce4ed;
+  background-color: white;
+}
+
+.download-button {
+  padding: 8px 18px;
+  border: 1px solid #ccc;
+  color: #222;
+  text-decoration: none;
+}
+
+.detail-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.detail-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.detail-images img,
+.detail-video {
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .detail-images {
+    grid-template-columns: 1fr;
+  }
+}
