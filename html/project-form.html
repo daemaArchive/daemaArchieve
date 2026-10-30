@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로젝트 등록 | 대마 아카이브</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/project-form.css">
+  <script type="module" src="../js/header.js"></script>
+  <script type="module" src="../js/project-form.js"></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main class="project-page">
+    <h1 id="page-title">프로젝트 등록</h1>
+    <p class="notice" id="page-notice">등록한 프로젝트는 관리자 승인 후 공개돼요.</p>
+
+    <form id="project-form" class="project-form">
+      <div class="form-row">
+        <label for="project-name">프로젝트명 <span class="required">*</span></label>
+        <input id="project-name" type="text" maxlength="100" placeholder="프로젝트명을 입력해 주세요" required>
+      </div>
+      <div class="form-row">
+        <label for="summary">한 줄 소개 <span class="required">*</span></label>
+        <div>
+          <input id="summary" type="text" maxlength="200" placeholder="프로젝트를 한 문장으로 소개해 주세요" required>
+          <p class="help">목록 카드에 표시돼요.</p>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="content">프로젝트 소개 <span class="required">*</span></label>
+        <textarea id="content" rows="5" placeholder="프로젝트를 소개해 주세요" required></textarea>
+      </div>
+      <div class="form-row">
+        <label for="tech-stack">기술 스택 <span class="required">*</span></label>
+        <div>
+          <div class="add-row">
+            <input id="tech-stack" type="text" placeholder="기술 입력 후 추가">
+            <button id="add-tech" class="blue-button" type="button">추가</button>
+          </div>
+          <p class="help">기술을 하나 이상 추가해 주세요.</p>
+          <div id="tech-list" class="tech-list"></div>
+        </div>
+      </div>
+      <div class="form-row">
+    </form>
+  </main>
+</body>
+</html>
