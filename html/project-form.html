@@ -43,6 +43,39 @@
         </div>
       </div>
       <div class="form-row">
+        <span class="row-label">팀원 및 역할</span>
+        <div>
+          <div class="team-inputs">
+            <label>회원 아이디<input id="member-id" type="text" placeholder="아이디 입력"></label>
+            <label>역할<input id="member-role" type="text" placeholder="역할 입력"></label>
+            <button id="add-member" class="outline-button" type="button">＋ 팀원 추가</button>
+          </div>
+          <table class="team-table">
+            <thead><tr><th>아이디</th><th>역할</th><th>삭제</th></tr></thead>
+            <tbody id="team-members"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="github">GitHub 링크</label>
+        <input id="github" type="url" placeholder="https://github.com/">
+      </div>
+      <div class="form-row">
+        <label for="presentation-date">발표 날짜</label>
+        <input id="presentation-date" type="date">
+      </div>
+      <div class="form-row">
+        <label for="reason">프로젝트 등록 사유 <span class="required">*</span></label>
+        <div>
+          <textarea id="reason" rows="2" placeholder="프로젝트를 등록하는 이유를 적어 주세요" required></textarea>
+          <p class="help">관리자가 검토할 때 확인해요.</p>
+        </div>
+      </div>
+      <div class="form-actions">
+        <a href="index.html" class="cancel-link">취소</a>
+        <button id="submit-button" class="blue-button" type="submit">검토 요청하기</button>
+      </div>
+      <p id="form-message" class="form-message"></p>
     </form>
   </main>
 </body>
