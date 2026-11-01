@@ -1,0 +1,77 @@
+.project-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.project-page h1 {
+  margin: 0 0 18px;
+  font-size: 34px;
+}
+
+.notice {
+  margin: 0 0 18px;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5;
+  color: #333;
+  font-size: 16px;
+}
+
+.project-form {
+  padding: 28px 32px;
+  border: 1px solid #e1e6ed;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.form-row > label,
+.row-label {
+  padding-top: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.required {
+  color: #e53935;
+}
+
+.project-form input,
+.project-form textarea {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8e0ea;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.help {
+  margin: 6px 0 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.add-row {
+  display: flex;
+  gap: 10px;
+}
+
+.blue-button,
+.outline-button,
+.cancel-link {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
