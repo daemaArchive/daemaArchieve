@@ -75,3 +75,70 @@
   white-space: nowrap;
 }
 
+.blue-button {
+  border: 1px solid #222;
+  background-color: #222;
+  color: white;
+}
+
+.outline-button {
+  border: 1px solid #222;
+  background-color: white;
+  color: #222;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.team-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.team-inputs label {
+  color: #555;
+  font-size: 14px;
+}
+
+.team-table {
+  margin-top: 12px;
+}
+
+.remove-member {
+  border: 0;
+  background: none;
+  color: #666;
+  font-size: 18px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #e9edf2;
+}
+
+.cancel-link {
+  border: 1px solid #d5dde7;
+  color: #444;
+}
+
+.form-message {
+  margin: 12px 0 0;
+  color: #333;
+  font-size: 15px;
+}
+
+@media (max-width: 720px) {
+  .form-row,
+  .team-inputs {
+    grid-template-columns: 1fr;
+  }
+}
