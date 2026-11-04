@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이페이지 | 대마 아카이브</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/mypage.css">
+  <script type="module" src="../js/header.js"></script>
+  <script type="module" src="../js/mypage.js"></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main class="mypage-main">
+    <h1>마이페이지</h1>
+    <p id="mypage-user" class="mypage-user"></p>
+    <p class="mypage-desc">내가 등록하거나 팀원으로 참여한 프로젝트를 확인해요.</p>
+
+    <p id="mypage-login-notice" hidden>
+      로그인 후 확인할 수 있습니다. <a href="login.html">로그인하기</a>
+    </p>
+
+    <div id="mypage-content" hidden>
+      <section class="mypage-card">
+        <div class="card-head">
+          <h2>내 프로젝트</h2>
+          <span class="info-pill">승인된 프로젝트만 전체 목록에 공개돼요.</span>
+        </div>
+        <table>
+          <thead><tr><th>프로젝트</th><th>참여</th><th>검토 상태</th></tr></thead>
+          <tbody id="my-projects-body"></tbody>
+        </table>
+        <p id="my-projects-empty" class="empty-note" hidden>등록하거나 참여한 프로젝트가 없습니다.</p>
+      </section>
+
+      <section class="mypage-card">
+        <h2>프로젝트 검토 내역</h2>
+        <table>
+          <thead><tr><th>프로젝트</th><th>요청일</th><th>상태</th><th>처리 사유</th></tr></thead>
+          <tbody id="my-reviews-body"></tbody>
+        </table>
+        <p id="my-reviews-empty" class="empty-note" hidden>검토 내역이 없습니다.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
