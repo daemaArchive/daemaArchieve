@@ -1,0 +1,62 @@
+.mypage-main {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.mypage-main h1 {
+  margin: 0 0 8px;
+  font-size: 38px;
+}
+
+.mypage-user {
+  margin: 0 0 6px;
+  font-weight: bold;
+}
+
+.mypage-desc {
+  margin: 0 0 28px;
+  color: #555;
+}
+
+.mypage-card {
+  padding: 26px;
+  margin-bottom: 24px;
+  border: 1px solid #dce4ed;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.mypage-card h2 {
+  margin: 0 0 18px;
+  font-size: 24px;
+}
+
+.card-head h2 {
+  margin: 0;
+}
+
+.info-pill {
+  padding: 8px 14px;
+  background-color: #f0f0f0;
+  color: #444;
+  font-size: 15px;
+}
+
+.project-link {
+  color: inherit;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.empty-note {
+  color: #777;
+  text-align: center;
+}
