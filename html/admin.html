@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로젝트 검토 | 대마 아카이브</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script type="module" src="../js/header.js"></script>
+  <script type="module" src="../js/admin.js"></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main class="admin-main">
+    <div class="page-heading">
+      <h1>프로젝트 검토</h1>
+      <p>등록 사유와 프로젝트 내용을 확인하고 승인 여부를 결정하세요.</p>
+    </div>
+    <p id="review-result" class="demo-notice"></p>
+
+    <div class="admin-layout">
+      <section class="admin-card list-card">
+        <div class="tabs">
+          <button type="button" class="tab is-active" data-status="검토중">검토중</button>
+          <button type="button" class="tab" data-status="승인">승인</button>
+          <button type="button" class="tab" data-status="거절">거절</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>프로젝트</th><th>신청자</th><th>요청일</th><th>상태</th></tr></thead>
+            <tbody id="project-list"></tbody>
+          </table>
+        </div>
+        <p id="empty-message" class="empty-message" hidden>해당 상태의 프로젝트가 없습니다.</p>
+      </section>
+
+      <section class="admin-card detail-card">
+        <div id="project-detail" hidden>
+          <h2 id="project-name"></h2>
+          <p class="project-meta" id="project-meta"></p>
+          <p class="project-summary" id="project-summary"></p>
+          <div class="reason-block"><strong>프로젝트 소개</strong><p id="project-content"></p></div>
+          <dl class="project-info">
+            <div><dt>사용 기술</dt><dd id="project-tech"></dd></div>
+            <div><dt>팀원</dt><dd id="project-team"></dd></div>
+            <div><dt>GitHub</dt><dd id="project-github"></dd></div>
+            <div><dt>발표 날짜</dt><dd id="project-date"></dd></div>
+          </dl>
+          <div class="reason-block"><strong>프로젝트 등록 사유</strong><p id="project-reason"></p></div>
+          <div class="review-area">
+            <label for="review-reason">처리 사유</label>
+            <textarea id="review-reason" rows="3" maxlength="100" placeholder="승인 또는 거절 사유를 입력하세요"></textarea>
+            <p>거절 시 사유를 반드시 입력해 주세요. <span id="reason-count">0 / 100자</span></p>
+            <div class="review-buttons">
+              <button type="button" id="reject-button" class="reject-button">거절</button>
+              <button type="button" id="approve-button" class="approve-button">승인</button>
+            </div>
+            <p id="review-message" class="review-message"></p>
+          </div>
+        </div>
+        <p id="detail-empty" class="empty-message">목록에서 프로젝트를 선택해 주세요.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
