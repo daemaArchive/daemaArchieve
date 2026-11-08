@@ -1,0 +1,80 @@
+.admin-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 36px 32px;
+}
+
+.page-heading h1 {
+  margin: 0;
+  font-size: 34px;
+}
+
+.page-heading p {
+  margin: 6px 0 16px;
+  color: #627089;
+}
+
+.demo-notice {
+  margin: 0 0 14px;
+  color: #333;
+  font-size: 15px;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.admin-card {
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #dce4ed;
+  border-radius: 8px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e1e8f0;
+}
+
+.tab {
+  min-width: 84px;
+  padding: 6px 16px 10px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: #53637b;
+}
+
+.tab.is-active {
+  border-bottom-color: #222;
+  color: #222;
+  font-weight: bold;
+}
+
+tr.is-selected td {
+  background-color: #f0f0f0;
+}
+
+.project-choice {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.detail-card h2 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.project-meta {
+  margin: 4px 0 10px;
+  color: #888;
+  font-size: 15px;
+}
+
