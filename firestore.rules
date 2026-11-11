@@ -20,5 +20,17 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // 프로젝트 문서: 승인된 글은 누구나 조회, 로그인 사용자는 조회/작성/수정, 작성자·관리자만 삭제
+    match /projects/{projectId} {
+      allow read: if resource.data.status == '승인' || isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.authorId == request.auth.uid;
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn() && (request.auth.uid == resource.data.authorId || isAdmin());
+    }
+
+    // 그 외 모든 경로 차단
+    match /{document=**} {
+      allow read, write: if false;
+    }
   }
 }
