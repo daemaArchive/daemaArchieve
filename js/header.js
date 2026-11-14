@@ -22,4 +22,23 @@ if (headerArea) {
     '<button type="button" id="logout-btn" class="user-only" hidden>로그아웃</button>' +
     '</nav></header>';
 
+  const guestMenus = headerArea.querySelectorAll('.guest-only');
+  const userMenus = headerArea.querySelectorAll('.user-only');
+  const adminMenu = document.getElementById('admin-menu');
+
+  onAuthStateChanged(auth, async function (user) {
+    for (let i = 0; i < guestMenus.length; i++) guestMenus[i].hidden = !!user;
+    for (let i = 0; i < userMenus.length; i++) userMenus[i].hidden = !user;
+    adminMenu.hidden = true;
+
+    if (user) {
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists() && userDoc.data().role === 'ADMIN') adminMenu.hidden = false;
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', async function () {
+    await signOut(auth);
+    location.href = 'index.html';
+  });
 }
