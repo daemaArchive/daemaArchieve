@@ -41,3 +41,19 @@ if (signupForm) {
   });
 }
 
+if (loginForm) {
+  const message = document.getElementById('login-message');
+
+  loginForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      location.href = 'index.html';
+    } catch (error) {
+      message.textContent = '로그인 실패: 이메일 또는 비밀번호를 확인해 주세요.';
+    }
+  });
+}
