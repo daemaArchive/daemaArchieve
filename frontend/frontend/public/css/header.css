@@ -28,13 +28,23 @@
   gap: 40px;
 }
 
-.header-nav a {
+.header-nav a,
+.header-nav button {
   font-size: 15px;
   font-weight: 600;
 }
 
+.header-nav button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #182335;
+}
+
 .header-nav a:hover,
-.header-nav a:focus-visible {
+.header-nav a:focus-visible,
+.header-nav button:hover,
+.header-nav button:focus-visible {
   color: #2165ed;
 }
 
