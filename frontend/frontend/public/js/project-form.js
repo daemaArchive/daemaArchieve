@@ -120,7 +120,8 @@ async function loadProject() {
   try {
     const response = await fetch(api + '/' + projectId, { credentials: 'include' });
     const project = await responseData(response);
-    if (!Array.isArray(project.tech_stacks) || !Array.isArray(project.members)) {
+    if (!Array.isArray(project.tech_stacks) || !Array.isArray(project.members) ||
+        project.members.some(function (member) { return typeof member.is_author !== 'boolean'; })) {
       throw new Error('프로젝트 정보를 모두 불러오지 못했습니다.');
     }
     document.querySelector('#project-name').value = project.title || '';
