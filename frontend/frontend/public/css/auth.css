@@ -1,0 +1,201 @@
+/* 로그인과 회원가입에 공통으로 사용하는 스타일 */
+body {
+  background: #f4f7fa;
+  color: #111827;
+}
+
+.auth-main {
+  padding: 80px 20px;
+}
+
+.login-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 74px);
+}
+
+.signup-main {
+  padding-top: 96px;
+  padding-bottom: 48px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 40px 42px;
+  background: #fff;
+  border: 1px solid #d8dee7;
+  border-radius: 9px;
+}
+
+.auth-card h1 {
+  margin: 0 0 25px;
+  color: #101722;
+  font-size: 34px;
+  line-height: 1.3;
+}
+
+.login-card {
+  padding-top: 52px;
+  padding-bottom: 46px;
+}
+
+.login-card h1 {
+  margin-bottom: 7px;
+  text-align: center;
+}
+
+.auth-intro {
+  margin: 0 0 32px;
+  color: #77859b;
+  font-size: 18px;
+  text-align: center;
+}
+
+.auth-form {
+  display: grid;
+  gap: 20px;
+}
+
+.form-field {
+  display: grid;
+  gap: 5px;
+}
+
+.form-field label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.form-field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 11px 15px;
+  border: 1px solid #cbd3df;
+  border-radius: 6px;
+  background: #fff;
+  color: #111827;
+}
+
+.login-card .form-field input {
+  min-height: 56px;
+}
+
+.form-field input::placeholder {
+  color: #94a0b2;
+}
+
+.form-field input:focus-visible {
+  outline: 3px solid #c7ddff;
+  border-color: #2466f2;
+}
+
+.form-field small {
+  color: #8996a8;
+  font-size: 14px;
+}
+
+.auth-submit {
+  min-height: 60px;
+  padding: 12px;
+  border: 0;
+  border-radius: 6px;
+  background: #2466f2;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.auth-submit:hover {
+  background: #1855d3;
+}
+
+.auth-submit:disabled {
+  background: #a7b5ce;
+  cursor: not-allowed;
+}
+
+.form-message {
+  margin: 0;
+  color: #335b9b;
+  font-size: 14px;
+}
+
+.form-message:empty {
+  display: none;
+}
+
+.auth-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 17px 20px;
+  border: 1px solid #d4e4ff;
+  border-radius: 6px;
+  background: #edf5ff;
+  color: #1656bd;
+  font-size: 14px;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #2466f2;
+  border-radius: 50%;
+  color: #2466f2;
+  font-weight: 700;
+}
+
+.auth-info p {
+  margin: 0;
+}
+
+.auth-info small,
+.auth-note {
+  color: #637895;
+  font-size: 13px;
+}
+
+.auth-switch {
+  margin: 27px 0 0;
+  color: #77859b;
+  text-align: center;
+}
+
+.signup-card .auth-switch {
+  padding-top: 25px;
+  border-top: 1px solid #dfe4ec;
+}
+
+.auth-switch a {
+  margin-left: 4px;
+  color: #2466f2;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .auth-main {
+    min-height: 0;
+    padding: 40px 16px;
+  }
+
+  .auth-card {
+    padding: 32px 24px;
+  }
+
+  .auth-card h1 {
+    font-size: 28px;
+  }
+}
