@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/projects', require('./routes/project.route'));
+app.use('/api/tech-stacks', require('./routes/techStack.route'));
 
 // Express 5는 async 핸들러에서 throw된 에러를 여기로 넘겨줌
 app.use((err, req, res, next) => {
