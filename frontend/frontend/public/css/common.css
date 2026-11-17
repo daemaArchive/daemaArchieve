@@ -1,0 +1,25 @@
+/* 모든 화면에서 사용하는 기본 스타일 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f4f7fa;
+  color: #172033;
+  font-family: Arial, "Malgun Gothic", sans-serif;
+  line-height: 1.6;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid #8bb8ff;
+  outline-offset: 2px;
+}

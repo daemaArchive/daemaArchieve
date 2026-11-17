@@ -1,0 +1,73 @@
+/* 이 파일은 header.js에서 공통으로 불러옵니다. */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 0 40px;
+  min-height: 70px;
+  background-color: white;
+  border-bottom: 1px solid #dbe2ea;
+}
+
+.header a {
+  text-decoration: none;
+  color: #182335;
+}
+
+.header .logo {
+  font-size: 24px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.header-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+}
+
+.header-nav a {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.header-nav a:hover,
+.header-nav a:focus-visible {
+  color: #2165ed;
+}
+
+.header-error {
+  padding: 12px 24px;
+  color: #842029;
+  background: #fff0f0;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .header {
+    gap: 16px;
+    padding: 12px 20px;
+  }
+
+  .header .logo {
+    font-size: 20px;
+  }
+
+  .header-nav {
+    justify-content: flex-end;
+    gap: 10px 16px;
+  }
+
+  .header-nav a {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
