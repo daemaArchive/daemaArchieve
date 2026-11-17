@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로젝트 등록 | 대마 아카이브</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/project-form.css">
+  <script src="../js/header.js" defer></script>
+  <script src="../js/project-form.js" defer></script>
+</head>
+<body>
+  <div id="header"></div>
+  <main class="project-page">
+    <h1 id="page-title">프로젝트 등록</h1>
+    <p class="notice" id="page-notice"><span aria-hidden="true">●</span> 등록한 프로젝트는 관리자 승인 후 공개돼요.</p>
+    <p class="demo-note">화면 확인용입니다. 서버 연결 전에는 작성한 내용이 저장되거나 전송되지 않습니다.</p>
+    <noscript><p class="demo-note">프로젝트 등록 화면을 사용하려면 JavaScript를 켜 주세요.</p></noscript>
+
+    <form id="project-form" class="project-form" novalidate>
+      <div class="form-row">
+        <label for="project-name">프로젝트명 <span class="required">*</span></label>
+        <input id="project-name" name="title" type="text" maxlength="100" placeholder="프로젝트명을 입력해 주세요" required>
+      </div>
+      <div class="form-row">
+        <label for="summary">한 줄 소개 <span class="required">*</span></label>
+        <div><input id="summary" name="summary" type="text" maxlength="200" placeholder="프로젝트를 한 문장으로 소개해 주세요" required><p class="help">목록 카드에 표시돼요.</p></div>
+      </div>
+      <div class="form-row">
+        <label for="content">프로젝트 소개 <span class="required">*</span></label>
+        <textarea id="content" name="content" rows="5" placeholder="프로젝트를 소개해 주세요" required></textarea>
+      </div>
+      <div class="form-row">
+        <label for="thumbnail">썸네일</label>
+        <div>
+          <label class="thumbnail-box" for="thumbnail"><img id="thumbnail-preview" alt="선택한 썸네일 미리보기" hidden><span id="thumbnail-placeholder">＋<br>대표 이미지 선택</span></label>
+          <input id="thumbnail" name="thumbnail" type="file" accept="image/*">
+          <p class="help">대표 이미지 1장</p>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="images">프로젝트 이미지</label>
+        <div><input id="images" name="images" type="file" accept="image/*" multiple><div id="image-preview" class="image-preview"></div><p class="help">이미지를 선택해 주세요. 형식과 용량 제한은 서버 연결 시 정해집니다.</p></div>
+      </div>
+      <div class="form-row">
+        <label for="videos">시연 영상</label>
+        <div><input id="videos" name="videos" type="file" accept="video/*"><p class="help">시연 영상을 첨부해 주세요.</p></div>
+      </div>
+      <div class="form-row">
+        <label for="overview">프로젝트 개요서</label>
+        <div><input id="overview" name="overview" type="file"><p class="help">프로젝트 소개 문서를 첨부해 주세요.</p></div>
+      </div>
+      <div class="form-row">
+        <label for="tech-stack">기술 스택 <span class="required">*</span></label>
+        <div>
+          <div class="add-row"><input id="tech-stack" type="text" placeholder="기술 입력 후 추가" aria-describedby="tech-help"><button id="add-tech" class="blue-button" type="button">추가</button></div>
+          <p class="help" id="tech-help">기술을 하나 이상 추가해 주세요.</p>
+          <div id="tech-list" class="tech-list"></div>
+        </div>
+      </div>
+      <div class="form-row">
+        <span class="row-label">팀원 및 역할</span>
+        <div>
+          <div class="team-inputs">
+            <label>회원 아이디<input id="member-id" type="text" placeholder="가입한 아이디 입력"></label>
+            <label>역할<input id="member-role" type="text" placeholder="역할 입력"></label>
+            <button id="add-member" class="outline-button" type="button">＋ 팀원 추가</button>
+          </div>
+          <table class="team-table"><thead><tr><th>아이디</th><th>역할</th><th><span class="visually-hidden">삭제</span></th></tr></thead><tbody id="team-members"></tbody></table>
+          <p class="help">팀원 계정 확인은 서버 연결 후 가능합니다.</p>
+        </div>
+      </div>
+      <div class="form-row"><label for="github">GitHub 링크</label><input id="github" name="github_url" type="url" placeholder="https://github.com/"></div>
+      <div class="form-row"><label for="presentation-date">발표 날짜</label><input id="presentation-date" name="presentation_date" type="date"></div>
+      <div class="form-row"><label for="reason">프로젝트 등록 사유 <span class="required">*</span></label><div><textarea id="reason" name="reason" rows="2" placeholder="프로젝트를 등록하는 이유를 적어 주세요" required></textarea><p class="help">관리자가 검토할 때 확인해요.</p></div></div>
+      <div class="form-actions"><a href="../index.html" class="cancel-link">취소</a><button id="submit-button" class="blue-button" type="submit" disabled>검토 요청하기</button></div>
+      <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+</body>
+</html>
