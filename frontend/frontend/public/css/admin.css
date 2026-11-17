@@ -34,7 +34,8 @@ tr.is-selected td { background: #e3efff; }
 .file-row { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border: 1px solid #d9e3ee; border-radius: 5px; font-size: 14px; }
 .file-row strong { color: #243247; }
 .file-row span { flex: 1; color: #6b7b91; }
-.file-row button { padding: 5px 10px; border: 1px solid #a9c7f5; border-radius: 5px; background: #fff; color: #7897c4; cursor: not-allowed; }
+.file-row button { padding: 5px 10px; border: 1px solid #a9c7f5; border-radius: 5px; background: #fff; color: #1761dd; }
+.file-row button:disabled { color: #7897c4; cursor: not-allowed; }
 .project-info { margin: 10px 0 14px; padding: 10px 0; border-top: 1px solid #e0e7ef; border-bottom: 1px solid #e0e7ef; }
 .project-info div { display: flex; align-items: baseline; gap: 24px; padding: 5px 0; }
 .project-info dt { width: 62px; color: #4c5a70; font-size: 14px; }

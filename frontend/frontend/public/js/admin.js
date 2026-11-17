@@ -1,86 +1,130 @@
-// 예시 데이터입니다. API 연결 시 서버에서 받은 목록으로 바꿉니다.
-const projects = [
-  { name: '대마 아카이브', applicant: '김학생', username: 'student1', date: '2026.10.20', summary: '학생 프로젝트를 한곳에 모아요', tech: ['JavaScript', 'Express', 'MySQL'], team: '김학생 · 이학생 · 박학생 · 학생4', reason: '교내 프로젝트 전시회에서 결과물을 공유하고 싶습니다.', status: '검토중' },
-  { name: '교내 일정', applicant: '이학생', username: 'student2', date: '2026.10.19', summary: '학교 일정을 한눈에 확인해요', tech: ['React', 'Firebase'], team: '이학생', reason: '학교 일정을 편리하게 공유하고 싶습니다.', status: '검토중' },
-  { name: '공부 타이머', applicant: '박학생', username: 'student3', date: '2026.10.18', summary: '집중하는 습관을 만들어 보세요', tech: ['JavaScript', 'Vue'], team: '박학생', reason: '공부 시간을 기록하고 싶습니다.', status: '검토중' }
-];
+// 개발 서버 주소입니다. 배포할 때는 서버 주소를 바꿉니다.
+const API = 'http://localhost:3000';
 const list = document.querySelector('#project-list');
 const tabs = document.querySelectorAll('.tab');
 const detail = document.querySelector('#project-detail');
 const detailEmpty = document.querySelector('#detail-empty');
+const result = document.querySelector('#review-result');
 const reasonInput = document.querySelector('#review-reason');
 const message = document.querySelector('#review-message');
 const approveButton = document.querySelector('#approve-button');
 const rejectButton = document.querySelector('#reject-button');
-let selectedStatus = '검토중';
-let selectedProject = projects[0];
+const downloadButton = document.querySelector('#download-overview');
+let selectedStatus = 'PENDING';
+let selectedProject = null;
+let listRequest = 0;
+let detailRequest = 0;
 
-function showDetail(project) {
-  if (!project) {
-    detail.hidden = true;
-    detailEmpty.hidden = false;
-    return;
+async function request(path, options = {}) {
+  const response = await fetch(API + path, { credentials: 'include', ...options });
+  if (!response.ok) {
+    const data = await response.json().catch(function () { return {}; });
+    throw new Error(data.message || (response.status === 401 ? '로그인이 필요합니다.' : response.status === 403 ? '관리자 권한이 필요합니다.' : '요청을 처리하지 못했습니다.'));
   }
-  detail.hidden = false;
-  detailEmpty.hidden = true;
-  document.querySelector('#project-name').textContent = project.name;
-  document.querySelector('#project-meta').textContent = project.applicant + ' (@' + project.username + ') · ' + project.date;
-  document.querySelector('#project-summary').textContent = project.summary;
-  document.querySelector('#project-team').textContent = project.team;
-  document.querySelector('#project-reason').textContent = project.reason;
-  const tech = document.querySelector('#project-tech');
-  tech.textContent = '';
-  project.tech.forEach(function (name) {
-    const tag = document.createElement('span');
-    tag.className = 'tech-tag';
-    tag.textContent = name;
-    tech.appendChild(tag);
-  });
-  reasonInput.value = project.reviewReason || '';
-  document.querySelector('#reason-count').textContent = reasonInput.value.length + ' / 100자';
-  const processed = project.status !== '검토중';
-  approveButton.disabled = processed;
-  rejectButton.disabled = processed;
-  reasonInput.disabled = processed;
-  message.textContent = '';
+  return response;
 }
 
-function showList() {
-  const visible = projects.filter(function (project) { return project.status === selectedStatus; });
-  if (!visible.includes(selectedProject)) selectedProject = visible[0] || null;
+function showError(error) {
+  return error instanceof TypeError ? '서버에 연결할 수 없습니다. 백엔드 실행 상태를 확인해 주세요.' : error.message;
+}
+
+function statusLabel(status) {
+  if (status === 'APPROVED') return '승인';
+  if (status === 'REJECTED') return '거절';
+  return '검토중';
+}
+
+async function loadList() {
+  const requestNumber = ++listRequest;
+  ++detailRequest;
+  selectedProject = null;
+  detail.hidden = true;
+  detailEmpty.hidden = false;
+  detailEmpty.textContent = '목록에서 프로젝트를 선택해 주세요.';
+  document.querySelector('#empty-message').hidden = true;
   list.textContent = '';
-  visible.forEach(function (project) {
-    const row = document.createElement('tr');
-    if (project === selectedProject) row.className = 'is-selected';
-    const title = document.createElement('td');
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'project-choice';
-    button.textContent = project.name;
-    button.addEventListener('click', function () {
-      selectedProject = project;
-      showList();
-      // 목록을 다시 그린 뒤에도 선택한 버튼에 키보드 초점을 유지합니다.
-      const selectedButton = list.querySelector('.is-selected .project-choice');
-      if (selectedButton) selectedButton.focus();
-    });
-    title.appendChild(button);
-    row.appendChild(title);
-    [project.applicant, project.date].forEach(function (text) {
+  result.textContent = '목록을 불러오는 중입니다.';
+  try {
+    const response = await request('/api/admin/projects?status=' + selectedStatus);
+    const data = await response.json();
+    if (requestNumber !== listRequest) return;
+    if (!Array.isArray(data.projects)) throw new Error('목록 응답 형식을 확인해 주세요.');
+    result.textContent = '';
+    document.querySelector('#empty-message').hidden = data.projects.length > 0;
+    data.projects.forEach(function (project) {
+      const row = document.createElement('tr');
+      const title = document.createElement('td');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'project-choice';
+      button.textContent = project.title;
+      button.addEventListener('click', function () {
+        list.querySelectorAll('tr').forEach(function (item) { item.classList.remove('is-selected'); });
+        row.classList.add('is-selected');
+        loadDetail(project);
+      });
+      title.appendChild(button);
+      row.appendChild(title);
+      [project.author ? project.author.name : '-', project.requested_at ? project.requested_at.slice(0, 10) : '-'].forEach(function (value) {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        row.appendChild(cell);
+      });
       const cell = document.createElement('td');
-      cell.textContent = text;
+      const badge = document.createElement('span');
+      badge.className = 'status' + (project.status === 'APPROVED' ? ' status-approved' : project.status === 'REJECTED' ? ' status-rejected' : '');
+      badge.textContent = statusLabel(project.status);
+      cell.appendChild(badge);
       row.appendChild(cell);
+      list.appendChild(row);
     });
-    const statusCell = document.createElement('td');
-    const badge = document.createElement('span');
-    badge.className = 'status' + (project.status === '승인' ? ' status-approved' : project.status === '거절' ? ' status-rejected' : '');
-    badge.textContent = project.status;
-    statusCell.appendChild(badge);
-    row.appendChild(statusCell);
-    list.appendChild(row);
-  });
-  document.querySelector('#empty-message').hidden = visible.length > 0;
-  showDetail(selectedProject);
+    return true;
+  } catch (error) {
+    if (requestNumber === listRequest) result.textContent = showError(error);
+    return false;
+  }
+}
+
+async function loadDetail(project) {
+  const requestNumber = ++detailRequest;
+  selectedProject = null;
+  detail.hidden = true;
+  detailEmpty.hidden = false;
+  detailEmpty.textContent = '상세 정보를 불러오는 중입니다.';
+  try {
+    const response = await request('/api/projects/' + encodeURIComponent(project.id));
+    const data = await response.json();
+    if (requestNumber !== detailRequest) return;
+    selectedProject = data;
+    detail.hidden = false;
+    detailEmpty.hidden = true;
+    document.querySelector('#project-name').textContent = data.title || '';
+    const author = project.author || {};
+    document.querySelector('#project-meta').textContent = (author.name || '') + (author.login_id ? ' (@' + author.login_id + ')' : '') + (project.requested_at ? ' · ' + project.requested_at.slice(0, 10) : '');
+    document.querySelector('#project-summary').textContent = data.summary || '';
+    document.querySelector('#project-description').textContent = data.description || '소개가 없습니다.';
+    document.querySelector('#project-reason').textContent = data.registration_reason || '등록 사유가 없습니다.';
+    document.querySelector('#project-team').textContent = (data.members || []).map(function (member) { return member.name || member.login_id; }).join(' · ') || '팀원 정보가 없습니다.';
+    const tech = document.querySelector('#project-tech');
+    tech.textContent = '';
+    (data.tech_stacks || []).forEach(function (name) {
+      const tag = document.createElement('span');
+      tag.className = 'tech-tag';
+      tag.textContent = name;
+      tech.appendChild(tag);
+    });
+    document.querySelector('#overview-name').textContent = data.overview ? data.overview.file_name : '첨부된 파일 없음';
+    downloadButton.disabled = !data.overview;
+    reasonInput.value = '';
+    document.querySelector('#reason-count').textContent = '0 / 100자';
+    const processed = data.status !== 'PENDING';
+    approveButton.disabled = processed;
+    rejectButton.disabled = processed;
+    reasonInput.disabled = processed;
+    message.textContent = '';
+  } catch (error) {
+    if (requestNumber === detailRequest) detailEmpty.textContent = showError(error);
+  }
 }
 
 tabs.forEach(function (tab) {
@@ -91,27 +135,60 @@ tabs.forEach(function (tab) {
       item.classList.toggle('is-active', active);
       item.setAttribute('aria-pressed', String(active));
     });
-    showList();
+    loadList();
   });
 });
+
 reasonInput.addEventListener('input', function () {
   document.querySelector('#reason-count').textContent = reasonInput.value.length + ' / 100자';
   message.textContent = '';
 });
 
-function review(status) {
-  if (status === '거절' && !reasonInput.value.trim()) {
+async function review(action) {
+  if (!selectedProject) return;
+  const reason = reasonInput.value.trim();
+  if (action === 'reject' && !reason) {
     message.textContent = '거절 사유를 입력해 주세요.';
     reasonInput.focus();
     return;
   }
-  // API 연결 시 서버 성공 응답을 받은 뒤 목록을 갱신합니다.
-  selectedProject.reviewReason = reasonInput.value.trim();
-  selectedProject.status = status;
-  showList();
-  // 실제 서버에 저장되지 않는 예시임을 알립니다.
-  document.querySelector('#review-result').textContent = status + ' 시연입니다. 실제로 처리되지 않았으며 새로고침하면 초기화됩니다.';
+  approveButton.disabled = true;
+  rejectButton.disabled = true;
+  try {
+    await request('/api/admin/projects/' + encodeURIComponent(selectedProject.id) + '/' + action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason: reason })
+    });
+    if (await loadList()) {
+      result.textContent = action === 'approve' ? '프로젝트를 승인했습니다.' : '프로젝트를 거절했습니다.';
+    }
+  } catch (error) {
+    message.textContent = showError(error);
+    approveButton.disabled = false;
+    rejectButton.disabled = false;
+  }
 }
-approveButton.addEventListener('click', function () { review('승인'); });
-rejectButton.addEventListener('click', function () { review('거절'); });
-showList();
+
+approveButton.addEventListener('click', function () { review('approve'); });
+rejectButton.addEventListener('click', function () { review('reject'); });
+
+downloadButton.addEventListener('click', async function () {
+  if (!selectedProject || !selectedProject.overview) return;
+  try {
+    const response = await request('/api/projects/' + encodeURIComponent(selectedProject.id) + '/overview');
+    const file = await response.blob();
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = selectedProject.overview.file_name || 'overview';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    message.textContent = showError(error);
+  }
+});
+
+loadList();
