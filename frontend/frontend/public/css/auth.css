@@ -112,6 +112,19 @@ body {
   background: #1855d3;
 }
 
+.auth-secondary {
+  padding: 8px 12px;
+  border: 1px solid #2466f2;
+  border-radius: 6px;
+  background: white;
+  color: #1855d3;
+}
+
+.auth-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .auth-submit:disabled {
   background: #a7b5ce;
   cursor: not-allowed;
