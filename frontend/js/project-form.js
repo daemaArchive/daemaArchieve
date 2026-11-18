@@ -8,7 +8,7 @@ const memberId = document.querySelector('#member-id');
 const memberRole = document.querySelector('#member-role');
 const teamMembers = document.querySelector('#team-members');
 const addMemberButton = document.querySelector('#add-member');
-const api = '/api/projects';
+const api = API_BASE + '/api/projects';
 const parameters = new URLSearchParams(window.location.search);
 const editing = parameters.get('mode') === 'edit';
 const projectId = parameters.get('id');
@@ -83,7 +83,7 @@ addMemberButton.addEventListener('click', async function () {
   addMemberButton.disabled = true;
   formMessage.textContent = '팀원을 확인하는 중입니다.';
   try {
-    const response = await fetch('/api/users/lookup?login_id=' + encodeURIComponent(id), {
+    const response = await fetch(API_BASE + '/api/users/lookup?login_id=' + encodeURIComponent(id), {
       credentials: 'include'
     });
     const member = await responseData(response);

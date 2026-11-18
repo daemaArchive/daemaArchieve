@@ -3,7 +3,7 @@ const loginForm = document.querySelector('#login-form');
 
 // 응답에 담긴 안내 문구를 화면에 표시합니다.
 async function requestAuth(path, options) {
-  const response = await fetch(path, options);
+  const response = await fetch(API_BASE + path, options);
   let data;
   try {
     data = await response.json();
@@ -131,7 +131,7 @@ if (loginForm) {
     submit.disabled = true;
     try {
       await requestAuth('/api/auth/login', postOptions({ email: emailInput.value.trim(), password: passwordInput.value }));
-      window.location.href = '../index.html';
+      window.location.href = './project-form.html';
     } catch (error) {
       message.textContent = authErrorMessage(error);
       if (error.code === 'EMAIL_NOT_VERIFIED') resend.hidden = false;

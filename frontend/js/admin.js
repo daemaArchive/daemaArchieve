@@ -15,7 +15,7 @@ let detailRequest = 0;
 
 async function request(path, options = {}) {
   options.credentials = 'include';
-  const response = await fetch(path, options);
+  const response = await fetch(API_BASE + path, options);
   if (!response.ok) {
     const data = await response.json().catch(function () { return {}; });
     let message = '요청을 처리하지 못했습니다.';
