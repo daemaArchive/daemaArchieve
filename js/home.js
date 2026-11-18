@@ -24,6 +24,27 @@ async function loadProjects() {
     let team = p.authorName || '작성자';
     if (p.members && p.members.length > 1) team += ' 외 ' + (p.members.length - 1) + '명';
 
+    let date = '';
+    if (p.presentationDate) date = '발표 ' + p.presentationDate.replaceAll('-', '.');
+
+    let tags = '';
+    if (p.techStacks) {
+      for (let j = 0; j < p.techStacks.length; j++) {
+        tags += '<span class="card-tag">' + p.techStacks[j] + '</span>';
+      }
+    }
+
+    let thumb = '';
+    if (p.thumbnailUrl) thumb = '<img class="card-thumb" src="' + p.thumbnailUrl + '" alt="' + p.title + '">';
+
+    html +=
+      '<a class="project-card" href="project-detail.html?id=' + docSnap.id + '">' +
+      thumb + '<h3>' + p.title + '</h3>' +
+      '<p class="card-summary">' + p.summary + '</p>' +
+      '<div class="card-techs">' + tags + '</div>' +
+      '<div class="card-footer"><span>' + team + '</span><span>' + date + '</span></div></a>';
+  }
+  document.getElementById('project-cards').innerHTML = html;
 }
 
 loadProjects();
