@@ -1,11 +1,9 @@
-// 개발 서버 주소. 배포할 때는 서버 주소에 맞게 바꿉니다.
-const API_BASE = 'http://localhost:3000';
 const signupForm = document.querySelector('#signup-form');
 const loginForm = document.querySelector('#login-form');
 
 // 응답에 담긴 안내 문구를 화면에 표시합니다.
 async function requestAuth(path, options) {
-  const response = await fetch(API_BASE + path, options);
+  const response = await fetch(path, options);
   let data;
   try {
     data = await response.json();
@@ -27,6 +25,13 @@ function postOptions(data) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   };
+}
+
+function authErrorMessage(error) {
+  if (error instanceof TypeError) {
+    return '서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.';
+  }
+  return error.message;
 }
 
 if (signupForm) {
@@ -53,10 +58,11 @@ if (signupForm) {
         credentials: 'include'
       });
       if (idInput.value === checkedId) {
-        idMessage.textContent = data.available ? '사용할 수 있는 아이디입니다.' : '이미 사용 중인 아이디입니다.';
+        idMessage.textContent = '이미 사용 중인 아이디입니다.';
+        if (data.available) idMessage.textContent = '사용할 수 있는 아이디입니다.';
       }
     } catch (error) {
-      if (idInput.value === checkedId) idMessage.textContent = error.message === 'Failed to fetch' ? '서버에 연결할 수 없습니다.' : error.message;
+      if (idInput.value === checkedId) idMessage.textContent = authErrorMessage(error);
     } finally {
       checkId.disabled = false;
     }
@@ -83,7 +89,7 @@ if (signupForm) {
       }));
       message.textContent = data.message || '인증 메일을 확인해 주세요.';
     } catch (error) {
-      message.textContent = error.message === 'Failed to fetch' ? '서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.' : error.message;
+      message.textContent = authErrorMessage(error);
     } finally {
       submit.disabled = false;
     }
@@ -105,7 +111,17 @@ if (loginForm) {
   const passwordInput = document.querySelector('#login-password');
   const message = document.querySelector('#login-message');
   const resend = document.querySelector('#resend-email');
+  const params = new URLSearchParams(window.location.search);
+  const verified = params.get('verified');
   submit.disabled = false;
+
+  if (verified === '1') {
+    message.textContent = '이메일 인증이 완료됐습니다. 로그인해 주세요.';
+  }
+  if (verified === '0') {
+    message.textContent = '이메일 인증에 실패했습니다. 이메일을 입력하고 인증 메일을 다시 요청해 주세요.';
+    resend.hidden = false;
+  }
 
   loginForm.addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -117,7 +133,7 @@ if (loginForm) {
       await requestAuth('/api/auth/login', postOptions({ email: emailInput.value.trim(), password: passwordInput.value }));
       window.location.href = '../index.html';
     } catch (error) {
-      message.textContent = error.message === 'Failed to fetch' ? '서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.' : error.message;
+      message.textContent = authErrorMessage(error);
       if (error.code === 'EMAIL_NOT_VERIFIED') resend.hidden = false;
     } finally {
       submit.disabled = false;
@@ -126,7 +142,7 @@ if (loginForm) {
 
   emailInput.addEventListener('input', function () {
     message.textContent = '';
-    resend.hidden = true;
+    if (verified !== '0') resend.hidden = true;
   });
   passwordInput.addEventListener('input', function () { message.textContent = ''; });
   resend.addEventListener('click', async function () {
@@ -136,7 +152,7 @@ if (loginForm) {
       const data = await requestAuth('/api/auth/verify-email/resend', postOptions({ email: emailInput.value.trim() }));
       message.textContent = data.message || '인증 메일을 다시 보냈습니다.';
     } catch (error) {
-      message.textContent = error.message === 'Failed to fetch' ? '서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.' : error.message;
+      message.textContent = authErrorMessage(error);
     } finally {
       resend.disabled = false;
     }

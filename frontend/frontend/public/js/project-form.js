@@ -7,7 +7,8 @@ const techList = document.querySelector('#tech-list');
 const memberId = document.querySelector('#member-id');
 const memberRole = document.querySelector('#member-role');
 const teamMembers = document.querySelector('#team-members');
-const api = 'http://localhost:3000/api/projects';
+const addMemberButton = document.querySelector('#add-member');
+const api = '/api/projects';
 const parameters = new URLSearchParams(window.location.search);
 const editing = parameters.get('mode') === 'edit';
 const projectId = parameters.get('id');
@@ -38,12 +39,14 @@ document.querySelector('#add-tech').addEventListener('click', function () {
 });
 techInput.addEventListener('input', function () { techInput.setCustomValidity(''); });
 
-function addMember(id, role) {
+function addMember(id, name, role) {
   const row = document.createElement('tr');
   const idCell = document.createElement('td');
+  const nameCell = document.createElement('td');
   const roleCell = document.createElement('td');
   const removeCell = document.createElement('td');
   idCell.textContent = id;
+  nameCell.textContent = name;
   roleCell.textContent = role;
   const idValue = document.createElement('input');
   idValue.type = 'hidden'; idValue.name = 'member_id'; idValue.value = id;
@@ -56,21 +59,47 @@ function addMember(id, role) {
   remove.setAttribute('aria-label', id + ' 팀원 삭제');
   remove.addEventListener('click', function () { row.remove(); savedAfterEdit = false; });
   removeCell.appendChild(remove);
-  row.append(idCell, roleCell, removeCell);
+  row.append(idCell, nameCell, roleCell, removeCell);
   teamMembers.appendChild(row);
   savedAfterEdit = false;
 }
 
-document.querySelector('#add-member').addEventListener('click', function () {
+addMemberButton.addEventListener('click', async function () {
   const id = memberId.value.trim();
   const role = memberRole.value.trim();
   if (!id || !role) {
     formMessage.textContent = '팀원 아이디와 역할을 모두 입력해 주세요.';
-    (!id ? memberId : memberRole).focus();
+    if (!id) memberId.focus();
+    else memberRole.focus();
     return;
   }
-  addMember(id, role);
-  memberId.value = ''; memberRole.value = ''; formMessage.textContent = '';
+  for (const input of teamMembers.querySelectorAll('[name="member_id"]')) {
+    if (input.value === id) {
+      formMessage.textContent = '이미 추가한 팀원입니다.';
+      return;
+    }
+  }
+
+  addMemberButton.disabled = true;
+  formMessage.textContent = '팀원을 확인하는 중입니다.';
+  try {
+    const response = await fetch('/api/users/lookup?login_id=' + encodeURIComponent(id), {
+      credentials: 'include'
+    });
+    const member = await responseData(response);
+    if (memberId.value.trim() !== id || memberRole.value.trim() !== role) {
+      formMessage.textContent = '팀원 입력이 바뀌었습니다. 다시 추가해 주세요.';
+      return;
+    }
+    addMember(member.login_id, member.name, role);
+    memberId.value = '';
+    memberRole.value = '';
+    formMessage.textContent = '';
+  } catch (error) {
+    formMessage.textContent = error.message;
+  } finally {
+    addMemberButton.disabled = false;
+  }
 });
 
 // 선택한 파일의 미리보기입니다.
@@ -108,7 +137,12 @@ images.addEventListener('change', function () {
 
 async function responseData(response) {
   const data = await response.json().catch(function () { return {}; });
+  if (response.status === 401) throw new Error(data.message || '로그인이 필요합니다.');
+  if (response.status === 502 || response.status === 503) {
+    throw new Error('백엔드 서버에 연결할 수 없습니다.');
+  }
   if (!response.ok) throw new Error(data.message || '요청에 실패했습니다.');
+  if (!data || Object.keys(data).length === 0) throw new Error('서버 응답 형식을 확인해 주세요.');
   return data;
 }
 
@@ -132,7 +166,7 @@ async function loadProject() {
     document.querySelector('#presentation-date').value = project.presentation_date || '';
     project.tech_stacks.forEach(addTech);
     project.members.filter(function (member) { return !member.is_author; }).forEach(function (member) {
-      addMember(member.login_id, member.role);
+      addMember(member.login_id, member.name, member.role);
     });
     resubmitButton.hidden = project.status !== 'REJECTED';
     document.querySelector('#page-notice').textContent = '기존 파일은 새 파일을 선택하지 않으면 유지됩니다. 수정 후 저장해 주세요.';
@@ -157,10 +191,17 @@ form.addEventListener('submit', async function (event) {
     return;
   }
   const data = new FormData(form);
-  const technologies = Array.from(techList.querySelectorAll('input')).map(function (field) { return field.value; });
-  const members = Array.from(teamMembers.querySelectorAll('tr')).map(function (row) {
-    return { login_id: row.querySelector('[name="member_id"]').value, role: row.querySelector('[name="member_role"]').value };
-  });
+  const technologies = [];
+  const members = [];
+  for (const field of techList.querySelectorAll('input')) {
+    technologies.push(field.value);
+  }
+  for (const row of teamMembers.querySelectorAll('tr')) {
+    members.push({
+      login_id: row.querySelector('[name="member_id"]').value,
+      role: row.querySelector('[name="member_role"]').value
+    });
+  }
   data.delete('member_id'); data.delete('member_role');
   data.set('tech_stacks', JSON.stringify(technologies));
   data.set('members', JSON.stringify(members));
@@ -169,14 +210,25 @@ form.addEventListener('submit', async function (event) {
     const input = form.querySelector('[name="' + name + '"]');
     if (!input.files.length) data.delete(name);
   });
+  let path = api;
+  let method = 'POST';
+  let successMessage = '검토 요청을 보냈습니다.';
+  if (editing) {
+    path = api + '/' + projectId;
+    method = 'PATCH';
+    successMessage = '수정 내용을 저장했습니다.';
+  }
+
   submitButton.disabled = true;
   try {
-    const response = await fetch(editing ? api + '/' + projectId : api, {
-      method: editing ? 'PATCH' : 'POST', credentials: 'include', body: data
+    const response = await fetch(path, {
+      method: method,
+      credentials: 'include',
+      body: data
     });
     const result = await responseData(response);
     savedAfterEdit = editing;
-    formMessage.textContent = result.message || (editing ? '수정 내용을 저장했습니다.' : '검토 요청을 보냈습니다.');
+    formMessage.textContent = result.message || successMessage;
     if (!editing) return;
     ['thumbnail', 'images', 'video', 'overview'].forEach(function (name) {
       form.querySelector('[name="' + name + '"]').value = '';
@@ -186,8 +238,9 @@ form.addEventListener('submit', async function (event) {
     document.querySelector('#thumbnail-placeholder').hidden = false;
   } catch (error) {
     formMessage.textContent = error.message === 'Failed to fetch' ? '서버에 연결할 수 없습니다. 입력한 내용은 유지됩니다.' : error.message;
+  } finally {
+    submitButton.disabled = false;
   }
-  submitButton.disabled = false;
 });
 
 resubmitButton.addEventListener('click', async function () {

@@ -1,5 +1,3 @@
-// 개발 서버 주소입니다. 배포할 때는 서버 주소를 바꿉니다.
-const API = 'http://localhost:3000';
 const list = document.querySelector('#project-list');
 const tabs = document.querySelectorAll('.tab');
 const detail = document.querySelector('#project-detail');
@@ -17,7 +15,7 @@ let detailRequest = 0;
 
 async function request(path, options = {}) {
   options.credentials = 'include';
-  const response = await fetch(API + path, options);
+  const response = await fetch(path, options);
   if (!response.ok) {
     const data = await response.json().catch(function () { return {}; });
     let message = '요청을 처리하지 못했습니다.';

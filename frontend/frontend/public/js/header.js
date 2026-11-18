@@ -27,7 +27,7 @@
       });
 
       // 로그인 상태는 서버에 확인합니다. 연결 전에는 비회원 메뉴를 보여줍니다.
-      fetch('http://localhost:3000/api/auth/me', { credentials: 'include' })
+      fetch('/api/auth/me', { credentials: 'include' })
         .then(function (response) {
           if (!response.ok) return null;
           return response.json();
@@ -41,7 +41,7 @@
         .catch(function () { /* 서버를 사용할 수 없을 때 비회원 메뉴를 유지합니다. */ });
 
       headerArea.querySelector('#logout-button').addEventListener('click', function () {
-        fetch('http://localhost:3000/api/auth/logout', { method: 'POST', credentials: 'include' })
+        fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
           .then(function (response) {
             if (!response.ok) throw new Error();
             window.location.reload();
