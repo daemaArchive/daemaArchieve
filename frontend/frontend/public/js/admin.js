@@ -16,10 +16,14 @@ let listRequest = 0;
 let detailRequest = 0;
 
 async function request(path, options = {}) {
-  const response = await fetch(API + path, { credentials: 'include', ...options });
+  options.credentials = 'include';
+  const response = await fetch(API + path, options);
   if (!response.ok) {
     const data = await response.json().catch(function () { return {}; });
-    throw new Error(data.message || (response.status === 401 ? '로그인이 필요합니다.' : response.status === 403 ? '관리자 권한이 필요합니다.' : '요청을 처리하지 못했습니다.'));
+    let message = '요청을 처리하지 못했습니다.';
+    if (response.status === 401) message = '로그인이 필요합니다.';
+    if (response.status === 403) message = '관리자 권한이 필요합니다.';
+    throw new Error(data.message || message);
   }
   return response;
 }
@@ -71,8 +75,10 @@ async function loadList() {
         row.appendChild(cell);
       });
       const cell = document.createElement('td');
-      const badge = document.createElement('span');
-      badge.className = 'status' + (project.status === 'APPROVED' ? ' status-approved' : project.status === 'REJECTED' ? ' status-rejected' : '');
+    const badge = document.createElement('span');
+    badge.className = 'status';
+    if (project.status === 'APPROVED') badge.classList.add('status-approved');
+    if (project.status === 'REJECTED') badge.classList.add('status-rejected');
       badge.textContent = statusLabel(project.status);
       cell.appendChild(badge);
       row.appendChild(cell);
