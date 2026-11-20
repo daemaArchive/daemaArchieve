@@ -42,6 +42,29 @@ async function loadDetail() {
     document.getElementById('detail-overview-download').href = p.overview.downloadUrl;
   }
 
+  let tags = '';
+  for (let i = 0; p.techStacks && i < p.techStacks.length; i++) {
+    tags += '<span class="detail-tag">' + p.techStacks[i] + '</span>';
+  }
+  document.getElementById('detail-techs').innerHTML = tags;
+
+  let rows = '';
+  for (let i = 0; p.members && i < p.members.length; i++) {
+    const m = p.members[i];
+    rows += '<tr><td>' + (m.name || m.loginId || '-') + '</td><td>' + (m.loginId || '-') + '</td><td>' + (m.role || '-') + '</td></tr>';
+  }
+  document.getElementById('detail-members').innerHTML = rows;
+
+  if (p.images && p.images.length > 0) {
+    document.getElementById('detail-images-section').hidden = false;
+    let imgs = '';
+    for (let i = 0; i < p.images.length; i++) imgs += '<img src="' + p.images[i] + '" alt="프로젝트 이미지">';
+    document.getElementById('detail-images').innerHTML = imgs;
+  }
+  if (p.videoUrl) {
+    document.getElementById('detail-video-section').hidden = false;
+    document.getElementById('detail-video').src = p.videoUrl;
+  }
 }
 
 loadDetail();
