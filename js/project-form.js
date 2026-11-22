@@ -57,3 +57,44 @@ document.getElementById('add-member').addEventListener('click', function () {
   formMessage.textContent = '';
 });
 
+form.addEventListener('submit', async function (event) {
+  event.preventDefault();
+  const user = auth.currentUser;
+  if (!user) return;
+  if (techStacks.length === 0) {
+    formMessage.textContent = '기술 스택을 하나 이상 추가해 주세요.';
+    return;
+  }
+
+  let authorName = user.email;
+  let authorLoginId = '';
+  const userDoc = await getDoc(doc(db, 'users', user.uid));
+  if (userDoc.exists()) {
+    authorName = userDoc.data().name || user.email;
+    authorLoginId = userDoc.data().loginId || '';
+  }
+
+  await addDoc(collection(db, 'projects'), {
+    title: document.getElementById('project-name').value.trim(),
+    summary: document.getElementById('summary').value.trim(),
+    content: document.getElementById('content').value.trim(),
+    techStacks: techStacks.slice(),
+    members: members.slice(),
+    githubUrl: document.getElementById('github').value.trim(),
+    presentationDate: document.getElementById('presentation-date').value,
+    reason: document.getElementById('reason').value.trim(),
+    authorId: user.uid,
+    authorName: authorName,
+    authorLoginId: authorLoginId,
+    status: '검토중',
+    reviewReason: '',
+    createdAt: new Date().toISOString().slice(0, 10)
+  });
+
+  formMessage.textContent = '검토 요청을 보냈습니다.';
+  form.reset();
+  techStacks.length = 0;
+  members.length = 0;
+  techList.innerHTML = '';
+  teamMembers.innerHTML = '';
+});
