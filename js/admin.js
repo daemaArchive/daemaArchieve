@@ -80,3 +80,66 @@ function showList() {
     if (p.status === '승인') badge += ' status-approved';
     if (p.status === '거절') badge += ' status-rejected';
 
+    row.innerHTML =
+      '<td><button type="button" class="project-choice">' + p.title + '</button></td>' +
+      '<td>' + (p.authorName || '-') + '</td>' +
+      '<td>' + (p.createdAt || '-') + '</td>' +
+      '<td><span class="' + badge + '">' + p.status + '</span></td>';
+
+    row.querySelector('.project-choice').addEventListener('click', function () {
+      selectedProject = p;
+      showList();
+    });
+    list.appendChild(row);
+  }
+
+  document.getElementById('empty-message').hidden = visible.length > 0;
+  showDetail(selectedProject);
+}
+
+for (let i = 0; i < tabs.length; i++) {
+  const tab = tabs[i];
+  tab.addEventListener('click', function () {
+    selectedStatus = tab.dataset.status;
+    for (let j = 0; j < tabs.length; j++) {
+      tabs[j].classList.remove('is-active');
+    }
+    tab.classList.add('is-active');
+    showList();
+  });
+}
+
+reasonInput.addEventListener('input', function () {
+  document.getElementById('reason-count').textContent = reasonInput.value.length + ' / 100자';
+  message.textContent = '';
+});
+
+async function review(status) {
+  if (!selectedProject) return;
+  const reviewReason = reasonInput.value.trim();
+  if (status === '거절' && !reviewReason) {
+    message.textContent = '거절 사유를 입력해 주세요.';
+    return;
+  }
+
+  await updateDoc(doc(db, 'projects', selectedProject.id), {
+    status: status,
+    reviewReason: reviewReason
+  });
+  result.textContent = '프로젝트를 ' + status + ' 처리했습니다.';
+  await loadProjects();
+}
+
+approveButton.addEventListener('click', function () { review('승인'); });
+rejectButton.addEventListener('click', function () { review('거절'); });
+
+onAuthStateChanged(auth, function (user) {
+  if (!user) {
+    projects = [];
+    showList();
+    result.textContent = '로그인 후 프로젝트 목록을 확인할 수 있습니다.';
+    return;
+  }
+  result.textContent = '';
+  loadProjects();
+});
